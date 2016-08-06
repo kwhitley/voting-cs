@@ -7,14 +7,24 @@ module.exports = {
     './client/src/index.js'
   ],
   module: {
-    loaders: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'react-hot!babel'
-    }]
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'react-hot!babel'
+      },
+      {
+        test: /\.scss$/,
+        loader: "style!css!sass"
+      },
+      {
+        test: /\.less$/,
+        loader: "style!css!less"
+      }
+    ]
   },
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['', '.js', '.scss']
   },
   output: {
     path: __dirname + '/dist',

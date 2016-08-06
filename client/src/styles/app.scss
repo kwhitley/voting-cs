@@ -1,0 +1,34 @@
+body {
+  font-family: 'Arial';
+  font-size: 16pt;
+  font-weight: light;
+}
+
+.completed {
+  opacity: 0.3;
+  text-decoration: line-through;
+}
+
+.todoList .todoItem input {
+  display: inline-block;
+  margin-right: 1em;
+}
+
+thead * {
+  text-align: left;
+  text-transform: uppercase;
+}
+
+
+.remove {
+  font-size: 0.7em;
+}
+
+.remove:before {
+  content: ' - ';
+}
+
+a {
+  text-decoration: none;
+  color: #6688bb;
+}
