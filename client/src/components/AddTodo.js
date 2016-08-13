@@ -4,9 +4,8 @@ export default React.createClass({
   addTodo: function(e) {
     e.preventDefault();
     let todoInput = this.refs.todoInput;
-    this.props.handleAddTodo(todoInput.value);
+    this.props.addTodo(todoInput.value);
     todoInput.value = '';
-    console.log('attempting to add');
   },
   render: function() {
     return (

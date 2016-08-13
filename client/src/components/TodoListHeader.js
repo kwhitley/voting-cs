@@ -1,9 +1,10 @@
 import React from 'react';
-import {List, Map} from 'immutable';
+// import {List, Map} from 'immutable';
 
 export default React.createClass({
   remainingTodos: function() {
-    return this.props.todos.filter(todo => !todo.completed).length;
+    // console.log('this.props', this.props);
+    return this.props.todos.size;
   },
   render: function() {
     return (

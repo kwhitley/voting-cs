@@ -1,51 +1,65 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {List, Map, fromJS} from 'immutable';
 import TodoListHeader from './TodoListHeader';
 import TodoListItems from './TodoListItems';
 import AddTodo from './AddTodo';
+import Filters from './Filters';
+import todosRedux from '../todos.redux';
+import todofiltersRedux from '../todofilters.redux';
 
-window.Map = Map;
+const getVisibleTodos = (todos, filter) => {
+  switch (filter) {
+    case 'SHOW_ALL':
+      return todos
+    case 'SHOW_COMPLETED':
+      return todos.filter(t => t.completed)
+    case 'SHOW_ACTIVE':
+      return todos.filter(t => !t.completed)
+  }
+}
 
-export default React.createClass({
-  persist: function() {
-    localStorage.setItem('state', JSON.stringify(this.state));
-  },
-  getInitialState: function() {
-    return JSON.parse(localStorage.getItem('state')) || {
-      todos: []
-    };
-  },
-  handleAddTodo: function(text) {
-    // const todos = this.state.todos.push({ text, completed: false });
-    this.setState({
-      todos: [...this.state.todos, { text: text, completed: false }]
-    }, this.persist);
-  },
-  handleRemoveTodo: function(index) {
-    // const todos = this.state.todos.push({ text, completed: false });
-    this.setState({
-      todos: this.state.todos.filter((todo, i) => i !== index)
-    }, this.persist);
-  },
-  handleToggleTodo: function(index) {
-    this.setState({
-      todos: this.state.todos.map((todo, i) => {
-        if (i === index) {
-          todo.completed = !todo.completed;
-        }
-        return todo;
-      })
-    }, this.persist);
-  },
+export const TodoList = React.createClass({
+  mixins: [PureRenderMixin],
   render: function() {
+    // console.log('todolist state', this.props.todos.toJS());
     return (
       <div>
+
+        <AddTodo {...this.props} />
+        <Filters />
         <table className="todoList">
-          <TodoListHeader {...this.state} />
-          <TodoListItems {...this.state} handleToggleTodo={this.handleToggleTodo} handleRemoveTodo={this.handleRemoveTodo} />
+          <TodoListHeader {...this.props} />
+          <TodoListItems {...this.props} />
         </table>
-        <AddTodo handleAddTodo={this.handleAddTodo} />
+
       </div>
     );
   }
 });
+
+function mapStateToProps(state) {
+  return {
+    todos: getVisibleTodos(state.todos, state.filter),
+  };
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    addTodo: () => {
+      dispatch(todosRedux.create.addTodo(ownProps.text))
+    }
+  }
+}
+
+// console.log('creators', todosRedux.creators);
+
+export const TodoListContainer = connect(
+  mapStateToProps,
+  Object.assign(
+    {},
+    todosRedux.creators,
+    todofiltersRedux.creators
+  )
+)(TodoList);

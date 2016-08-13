@@ -1,28 +1,24 @@
 import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 export default React.createClass({
-  toggleStatus: function() {
-    this.props.handleToggleTodo(this.props.index);
+  mixins: [PureRenderMixin],
+  toggleTodo: function() {
+    // const todo = this.props.todo;
+    this.props.toggleTodo(this.props.todo.index);
+    // console.log('toggling completed to', this.props.todo.completed);
   },
   removeTodo: function(e) {
     e.preventDefault();
-    this.props.handleRemoveTodo(this.props.index);
+    this.props.removeTodo(this.props.index);
   },
   render: function() {
     const {todo} = this.props;
     return (
-      <tr className="todoItem">
+      <tr className={'todoItem ' + (todo.completed && 'completed')}>
         <td>
-        <label className={todo.completed && 'completed'}>
-          <input
-            type="checkbox"
-            ref="isComplete"
-            checked={todo.completed}
-            onChange={this.toggleStatus}
-          />
-          {this.props.todo.text}
-        </label>
-        <a href="#" className="remove" onClick={this.removeTodo}>remove item</a>
+          <label onClick={this.toggleTodo}>{todo.text}</label>
+          <a href="#" className="remove" onClick={this.removeTodo}>remove</a>
         </td>
       </tr>
     );

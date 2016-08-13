@@ -4,14 +4,38 @@ body {
   font-weight: light;
 }
 
-.completed {
+.completed label {
   opacity: 0.3;
   text-decoration: line-through;
 }
 
-.todoList .todoItem input {
+.todoList td {
+  padding-bottom: 0.3em;
+}
+
+.todoList .todoItem label {
+  cursor: pointer;
+}
+
+.todoList .todoItem label:before {
+  content: ' ';
+  overflow: hidden;
+  font-size: 1.1em;
+  color: #393;
+  line-height: 1em;
+  font-family: 'Capitals';
   display: inline-block;
-  margin-right: 1em;
+  height: 1em;
+  width: 1em;
+  position: relative;
+  margin-right: 0.4em;
+  margin-bottom: -0.2em;
+  border-radius: 10em;
+  border: 1px solid #ccc;
+}
+
+.todoList .completed label:before {
+  content: '✓';
 }
 
 thead * {
