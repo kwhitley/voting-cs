@@ -9,7 +9,7 @@ export default React.createClass({
   },
   render: function() {
     return (
-      <form onSubmit={this.addTodo}>
+      <form onSubmit={this.addTodo} className="addTodo">
         <input placeholder="add a todo" type="text" ref="todoInput" />
         <button type="submit">Add</button>
       </form>

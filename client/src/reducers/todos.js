@@ -1,5 +1,4 @@
-// import ReduxRegistry from '../../node_modules/redux-registry/dist/redux-registry.js';
-import ReduxRegistry from './redux-registry.js';
+import ReduxRegistry from '../redux-registry.js';
 import Immutable from 'immutable';
 const {Map, List, fromJS} = Immutable;
 
@@ -20,26 +19,48 @@ register
       };
     },
     reduce: (state, action) => {
-      // console.log('state.maxBy',state.maxBy(t => t.index));
-      const maxIndex = state.size ? state.maxBy(t => t.index).index : 0;
+      if (!action.text) {
+        return state;
+      }
+      // console.log('state.maxBy',state.maxBy(t => t.id));
+      const maxIndex = state.size ? state.maxBy(t => t.id).id : 0;
       return state.push({
-        index: maxIndex + 1,
+        id: maxIndex + 1,
         text: action.text,
         completed: false
       })
     }
   })
   .add({
-    alias: 'toggleTodo',
-    create: function(index) {
+    alias: 'editTodo',
+    create: function(id, text) {
       return {
-        type: 'TOGGLE_TODO',
-        index: index
+        type: 'EDIT_TODO',
+        id,
+        text
       }
     },
     reduce: function(state, action) {
       return state.map(todo => {
-        if (action.index === todo.index) {
+        if (action.id === todo.id) {
+          todo.text = action.text;
+        }
+
+        return todo;
+      });
+    }
+  })
+  .add({
+    alias: 'toggleTodo',
+    create: function(id) {
+      return {
+        type: 'TOGGLE_TODO',
+        id
+      }
+    },
+    reduce: function(state, action) {
+      return state.map(todo => {
+        if (action.id === todo.id) {
           todo.completed = !todo.completed;
         }
 
@@ -49,16 +70,18 @@ register
   })
   .add({
     alias: 'removeTodo',
-    create: function(index) {
+    create: function(id) {
       return {
         type: 'REMOVE_TODO',
-        index
+        id
       }
     },
     reduce: function(state, action) {
-      return state.filterNot((todo, index) => index === action.index);
+      return state.filterNot(todo => todo.id === action.id);
     }
   })
 ;
+
+export const todos = register.reducer;
 
 export default register;

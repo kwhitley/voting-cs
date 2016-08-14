@@ -7,7 +7,7 @@ export default React.createClass({
       <tbody>
         {
           this.props.todos.map((todo, index) =>
-            <TodoItem className={todo.completed ? 'completed' : ''} key={index} index={index} todo={todo} {...this.props} />
+            <TodoItem className={todo.completed ? 'completed' : ''} key={index} todo={todo} {...this.props} />
           )
         }
       </tbody>

@@ -84,7 +84,6 @@ export default function ReduxRegistry(init) {
   this.reducer = (function(state = initialState, action) {
     let state1 = state;
 
-    // console.log('reducing action', action);
     if (Array.isArray(action)) {
       let s = state;
       action.forEach(a => {

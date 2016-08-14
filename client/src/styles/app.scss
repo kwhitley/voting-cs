@@ -4,9 +4,71 @@ body {
   font-weight: light;
 }
 
-.completed label {
+.addTodo {
+  position: relative;
+  display: block;
+}
+
+.active {
+  color: black;
+}
+
+.ascending:after, .descending:after {
+  display: inline-block;
+  margin-left: 0.3em;
+  font-size: 0.8em;
+  position: relative;
+  top: -0.15em;
+}
+
+.ascending:after {
+  content: '↑';
+}
+
+.descending:after {
+  content: '↓';
+}
+
+input[type='text'] {
+  display: block;
+  width: 98%;
+  font-size: 1.2em;
+  padding: 0.1em 0 0.1em 0.3em;
+  background: transparent;
+  border: none;
+}
+
+button[type='submit'] {
+  cursor: pointer;
+  color: #383;
   opacity: 0.3;
+  font-size: 1.3em;
+  border: none;
+  background: transparent;
+}
+
+button[type='submit']:hover {
+  opacity: 1;
+}
+
+input[type='text'] + button[type='submit'] {
+  position: absolute;
+  right: 1.5%;
+  top: 0;
+  text-transform: lowercase;
+  z-index: 1;
+}
+
+.completed {
+  opacity: 0.2;
   text-decoration: line-through;
+}
+
+.inlineEdit {
+  display: inline-block;
+  input {
+    display: inline-block;
+  }
 }
 
 .todoList td {
@@ -19,19 +81,21 @@ body {
 
 .todoList .todoItem label:before {
   content: ' ';
-  overflow: hidden;
-  font-size: 1.1em;
+  // overflow: hidden;
+  vertical-align: bottom;
+  font-size: 1.2em;
   color: #393;
-  line-height: 1em;
+  line-height: 0.4em;
   font-family: 'Capitals';
   display: inline-block;
-  height: 1em;
-  width: 1em;
+  height: 0.7em;
+  width: 0.7em;
   position: relative;
   margin-right: 0.4em;
-  margin-bottom: -0.2em;
+  margin-bottom: 0.05em;
   border-radius: 10em;
-  border: 1px solid #ccc;
+  text-indent: -0.05em;
+  border: 1px solid #999;
 }
 
 .todoList .completed label:before {

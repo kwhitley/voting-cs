@@ -6,8 +6,9 @@ import TodoListHeader from './TodoListHeader';
 import TodoListItems from './TodoListItems';
 import AddTodo from './AddTodo';
 import Filters from './Filters';
-import todosRedux from '../todos.redux';
-import todofiltersRedux from '../todofilters.redux';
+import SortOptions from './SortOptions';
+import todos from '../reducers/todos';
+import filters from '../reducers/filters';
 
 const getVisibleTodos = (todos, filter) => {
   switch (filter) {
@@ -20,20 +21,26 @@ const getVisibleTodos = (todos, filter) => {
   }
 }
 
+const sortTodos = (todos, sortby, ascending) => {
+  todos = todos.sortBy(todo => todo[sortby]);
+  if (!ascending) {
+    return todos.reverse();
+  }
+  return todos;
+}
+
 export const TodoList = React.createClass({
   mixins: [PureRenderMixin],
   render: function() {
-    // console.log('todolist state', this.props.todos.toJS());
     return (
       <div>
-
         <AddTodo {...this.props} />
         <Filters />
+        <SortOptions />
         <table className="todoList">
           <TodoListHeader {...this.props} />
           <TodoListItems {...this.props} />
         </table>
-
       </div>
     );
   }
@@ -41,25 +48,29 @@ export const TodoList = React.createClass({
 
 function mapStateToProps(state) {
   return {
-    todos: getVisibleTodos(state.todos, state.filter),
+    todos: sortTodos(
+      getVisibleTodos(state.todos, state.filter),
+      state.sort.by,
+      state.sort.ascending
+    )
   };
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     addTodo: () => {
-      dispatch(todosRedux.create.addTodo(ownProps.text))
+      dispatch(todos.create.addTodo(ownProps.text))
     }
   }
 }
 
-// console.log('creators', todosRedux.creators);
+// console.log('creators', todos.creators);
 
 export const TodoListContainer = connect(
   mapStateToProps,
   Object.assign(
     {},
-    todosRedux.creators,
-    todofiltersRedux.creators
+    todos.creators,
+    filters.creators
   )
 )(TodoList);

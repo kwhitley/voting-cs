@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import {connect} from 'react-redux';
-import filters from '../todofilters.redux';
+import filters from '../reducers/filters';
 
 const FilterLink = ({ filter, active, children, setFilter }) => {
   if (active) {
